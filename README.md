@@ -1,6 +1,6 @@
 # IA invader
 
-![Banner](Print_screen/Captura de tela 2025-04-10 173352.png)
+![Banner]([Print_screen/Captura de tela 2025-04-10 173352.png](https://github.com/g0dux/IA-invader/tree/main/Print_screen))
 
 Welcome to **IA invader**, your local security assistant powered by artificial intelligence! This tool is designed to interpret natural language commands and automatically convert them into valid shell commands, helping you perform security scans and vulnerability analysis with ease.
 
