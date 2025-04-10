@@ -224,7 +224,3 @@ Distributed under the MIT License. See the [LICENSE](LICENSE) file for more deta
 ---
 
 > **Tip:** If you encounter any issues or have suggestions, open an *issue* on the repository or contact us via email. We are always looking to improve IA invader!
-```
-
-This README now provides complete information about IA invader in English, including setup instructions for Ollama and Mistral. Let me know if you need further refinements!
-
