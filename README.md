@@ -2,273 +2,231 @@
 
 ![Banner](https://via.placeholder.com/800x200?text=IA+invader)
 
-Bem-vindo ao **IA invader**, seu assistente de segurança local alimentado por inteligência artificial! Esta ferramenta foi desenvolvida para interpretar comandos em linguagem natural e convertê-los automaticamente em comandos de shell válidos, auxiliando você na execução de varreduras de segurança e análises de vulnerabilidades com facilidade.
+Welcome to **IA invader**, your local security assistant powered by artificial intelligence! This tool is designed to interpret natural language commands and automatically convert them into valid shell commands, helping you perform security scans and vulnerability analysis with ease.
 
 ---
 
-## Sumário
+## Table of Contents
 
-- [Sobre](#sobre)
-- [Funcionalidades](#funcionalidades)
-- [Pré-requisitos e Dependências](#pré-requisitos-e-dependências)
-- [Instalação](#instalação)
-- [Configuração](#configuração)
-- [Uso](#uso)
-  - [Exemplos de Comandos](#exemplos-de-comandos)
-- [Llama Pull Mistral e Ollama](#llama-pull-mistral-e-ollama)
-- [Feedback e Auto-Correção](#feedback-e-auto-correção)
-- [Logs e Histórico](#logs-e-histórico)
-- [Contribuição](#contribuição)
-- [Licença](#licença)
-- [Contato](#contato)
-
----
-
-## Sobre
-
-O **IA invader** é uma ferramenta de linha de comando que utiliza a API do Ollama com o modelo **Mistral** para gerar comandos de shell a partir de requisições feitas em linguagem natural. A ferramenta suporta comandos direcionados a sistemas Linux e Windows e oferece recursos como:
-
-- **Geração Automática de Comandos:** Transforma a requisição do usuário em um comando de shell apropriado.
-- **Interpretação do Comando:** Exibe uma breve explicação do que o comando fará.
-- **Auto-Correção:** Sugere alternativas em caso de erro na execução.
-- **Interface Multilíngue:** Suporte para Inglês e Português.
-- **Spinner e Feedback Visual:** Exibe uma animação enquanto o comando é processado.
-- **Dicas de Instalação:** Caso uma ferramenta necessária não esteja instalada, são fornecidas instruções e links para o download.
+- [About](#about)
+- [Features](#features)
+- [Prerequisites & Dependencies](#prerequisites--dependencies)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+  - [Command Examples](#command-examples)
+- [Llama Pull Mistral & Ollama](#llama-pull-mistral--ollama)
+- [Feedback & Auto-Correction](#feedback--auto-correction)
+- [Logs & History](#logs--history)
+- [Contribution](#contribution)
+- [License](#license)
+- [Contact](#contact)
 
 ---
 
-## Funcionalidades
+## About
 
-- **Geração Inteligente:** Converte requisições em comandos de shell com base em inteligência artificial.
-- **Execução Interativa:** Pede confirmação antes de executar comandos sensíveis.
-- **Feedback Visual:** Inclui um spinner animado para indicar que o comando está sendo processado.
-- **Sugestões de Correção:** Em caso de erro, a ferramenta interage para sugerir um comando alternativo.
-- **Multilíngue:** Interface disponível em Inglês e Português.
-- **Customização:** Permite selecionar o sistema operacional alvo (Linux ou Windows).
+**IA invader** is a command-line tool that uses the **Ollama API** with the **Mistral** model to generate shell commands from natural language requests. The tool supports both Linux and Windows systems and offers features such as:
+
+- **Automatic Command Generation:** Translates user requests into appropriate shell commands.
+- **Command Interpretation:** Displays a brief explanation of the generated command.
+- **Auto-Correction:** Suggests alternative commands in case of execution errors.
+- **Multilingual Interface:** Supports English and Portuguese.
+- **Spinner & Visual Feedback:** Displays an animation while the command is being processed.
+- **Installation Tips:** If a required tool is missing, instructions and download links are provided.
 
 ---
 
-## Pré-requisitos e Dependências
+## Features
 
-Antes de utilizar o IA invader, certifique-se de ter os seguintes itens instalados:
+- **Intelligent Generation:** Converts requests into shell commands using AI.
+- **Interactive Execution:** Asks for confirmation before executing sensitive commands.
+- **Visual Feedback:** Includes an animated spinner to indicate processing.
+- **Correction Suggestions:** If an error occurs, the tool suggests an alternative command.
+- **Multilingual Support:** Interface available in English and Portuguese.
+- **Customization:** Allows selecting the target operating system (Linux or Windows).
+
+---
+
+## Prerequisites & Dependencies
+
+Before using IA invader, ensure the following items are installed:
 
 - **Python 3.7+**  
-  A ferramenta foi desenvolvida em Python e utiliza os seguintes módulos:
+  The tool is built in Python and requires the following modules:
   - `os`, `time`, `subprocess`, `requests`, `sys`, `threading`, `itertools`
 
-  Caso não possua o módulo *requests*, instale-o com:
+  If you don’t have the *requests* module, install it with:
   ```bash
   pip install requests
-API do Ollama com o Modelo Mistral
-A ferramenta utiliza a API do Ollama para gerar comandos. A URL padrão é:
-http://localhost:11434/api/generate
-Certifique-se de que o serviço está ativo.
+  ```
 
-Llama Pull Mistral com Ollama
-Para utilizar o modelo Mistral, é necessário baixar e configurar o Llama Pull Mistral. Veja mais detalhes na sessão Llama Pull Mistral e Ollama abaixo.
+- **Ollama API with Mistral Model**  
+  The tool uses the Ollama API to generate commands. The default URL is:  
+  `http://localhost:11434/api/generate`  
+  Ensure the service is running.
 
-Ferramentas de Segurança
-Dependendo dos comandos gerados, você poderá precisar de ferramentas como:
+- **Llama Pull Mistral with Ollama**  
+  To use the **Mistral** model, you need to download and configure **Llama Pull Mistral**. See more details in the [Llama Pull Mistral & Ollama](#llama-pull-mistral--ollama) section below.
 
-Nmap:
+- **Security Tools**  
+  Depending on the generated commands, you may need tools such as:
+  - **Nmap:**  
+    - [Download for Windows](https://nmap.org/download.html#windows)  
+      or, on Linux:
+      ```bash
+      sudo apt install nmap
+      ```
+  - **Nikto:**  
+    - [Download for Windows](https://cirt.net/Nikto2)  
+      or follow Linux installation instructions.
 
-Download para Windows
-ou, em Linux:
+- **Execution Permissions:**  
+  On Windows or when commands require root privileges on Linux, run the script with appropriate permissions.
 
-bash
-Copiar
-Editar
-sudo apt install nmap
-Nikto:
+---
 
-Download para Windows
-ou siga as instruções para instalação em Linux.
+## Installation
 
-Permissões de Execução:
-Em sistemas Windows ou quando comandos exigirem privilégios de root em Linux, execute o script com as permissões apropriadas.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-user/ia-invader.git
+   cd ia-invader
+   ```
 
-Instalação
-Clone o repositório:
+2. **Create a virtual environment (optional, but recommended):**
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Linux/macOS
+   venv\Scripts\activate     # On Windows
+   ```
 
-bash
-Copiar
-Editar
-git clone https://github.com/seu-usuario/ia-invader.git
-cd ia-invader
-Crie um ambiente virtual (opcional, mas recomendado):
+3. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-bash
-Copiar
-Editar
-python3 -m venv venv
-source venv/bin/activate  # Em Linux/macOS
-venv\Scripts\activate     # Em Windows
-Instale as dependências:
+4. **Configure the Ollama API:**  
+   Ensure the API is running at the specified URL. If necessary, update the `OLLAMA_API_URL` variable in the code.
 
-bash
-Copiar
-Editar
-pip install -r requirements.txt
-Configure a API do Ollama:
-Certifique-se de que a API está rodando na URL especificada. Caso necessário, atualize a variável OLLAMA_API_URL no código.
+5. **Set up Llama Pull Mistral with Ollama:**  
+   See steps in [Llama Pull Mistral & Ollama](#llama-pull-mistral--ollama).
 
-Configure o Llama Pull Mistral com Ollama:
-Veja os passos na sessão Llama Pull Mistral e Ollama.
+---
 
-Configuração
-Idioma:
-Ao iniciar, escolha entre Inglês e Português para a interface da ferramenta.
+## Usage
 
-Sistema Operacional Alvo:
-Selecione se os comandos gerados serão para um sistema Linux ou Windows.
+To start IA invader, run:
 
-Personalização:
-Os textos e mensagens estão definidos no dicionário LANGUAGES do código e podem ser editados conforme necessário.
-
-Ferramentas Suportadas:
-O dicionário DOWNLOAD_LINKS contém links e instruções de instalação para ferramentas essenciais (como Nmap e Nikto). Expanda essa lista conforme necessário.
-
-Uso
-Para iniciar o IA invader, execute:
-
-bash
-Copiar
-Editar
+```bash
 python ia_invader.py
-Siga as etapas a seguir:
+```
 
-Seleção de Idioma:
-Escolha entre Inglês ou Português para a interface.
+Follow these steps:
 
-Seleção do Sistema Operacional:
-Defina se o alvo é Linux ou Windows.
+1. **Select Language:**  
+   Choose between English or Portuguese.
 
-Interface Interativa:
+2. **Select Target OS:**  
+   Specify whether the generated commands will be for Linux or Windows.
 
-Apresentação de banner e mensagens de boas-vindas.
+3. **Interactive Interface:**  
+   - Displays welcome messages and usage instructions.
+   - Prompts for a user request, e.g.:
+     ```
+     What would you like to do? (e.g., scan google.com with nmap):
+     ```
 
-Exibição de opções e instruções de uso.
+4. **Processing & Execution:**  
+   - The generated command will be displayed with a brief explanation.
+   - Upon confirmation, the command executes. If an error occurs, the tool may suggest a correction automatically.
 
-Input para a sua requisição, por exemplo:
+### Command Examples
 
-scss
-Copiar
-Editar
-O que você deseja fazer? (ex.: varrer google.com com nmap):
-Processamento e Execução:
+- **Scan a website with Nmap:**
+  ```
+  scan google.com with nmap
+  ```
+- **Perform a scan with Nikto:**
+  ```
+  scan example.com with nikto
+  ```
 
-O comando gerado será exibido juntamente com uma breve explicação.
+---
 
-Após a confirmação, o comando será executado. Se houver erro, a ferramenta pode sugerir uma correção automaticamente.
+## Llama Pull Mistral & Ollama
 
-Exemplos de Comandos
-Escanear um site com Nmap:
+To use the **Mistral** model with IA invader, set up **Llama Pull Mistral** via Ollama:
 
-csharp
-Copiar
-Editar
-scan google.com with nmap
-Realizar uma varredura com Nikto:
+1. **Install Ollama:**
+   - Download the installer for your OS from the [Ollama official website](https://ollama.com/download).
+   - Follow the installation instructions.
 
-csharp
-Copiar
-Editar
-scan example.com with nikto
-Llama Pull Mistral e Ollama
-Para utilizar o modelo Mistral no IA invader, é necessário configurar o Llama Pull Mistral via Ollama:
+2. **Verify Ollama installation:**
+   - Open a terminal and run:
+     ```bash
+     ollama --version
+     ```
+   - This should display the installed Ollama version.
 
-Instale o Ollama:
+3. **Download the Mistral model:**
+   - Run:
+     ```bash
+     ollama pull mistral
+     ```
+   - This will download and prepare the **Mistral** model for use.
 
-Baixe o instalador apropriado para o seu sistema operacional no site oficial do Ollama.
+4. **Run the Mistral model:**
+   - Start the model with:
+     ```bash
+     ollama run mistral
+     ```
+   - This launches an interactive session, allowing the API to use the model for command generation.
 
-Siga as instruções de instalação específicas para o seu sistema.
+5. **Integrate with IA invader:**
+   - Ensure the **Mistral** model is running so that the API communication (via `OLLAMA_API_URL`) works properly.
 
-Verifique a instalação do Ollama:
+---
 
-Abra o terminal e execute:
+## Contribution
 
-bash
-Copiar
-Editar
-ollama --version
-Esse comando deve exibir a versão do Ollama instalada, confirmando que a instalação foi bem-sucedida.
+To contribute to the project:
 
-Baixe o modelo Mistral:
+1. Fork the repository.
+2. Create a feature branch:
+   ```bash
+   git checkout -b feature/new-feature
+   ```
+3. Commit your changes:
+   ```bash
+   git commit -am 'Add new feature'
+   ```
+4. Push to the remote repository:
+   ```bash
+   git push origin feature/new-feature
+   ```
+5. Open a Pull Request.
 
-No terminal, execute:
+Your contributions are highly appreciated!
 
-bash
-Copiar
-Editar
-ollama pull mistral
-Isso fará o download do modelo Mistral e o preparará para uso.
+---
 
-Execute o modelo Mistral:
+## License
 
-Após o download, inicie o modelo com:
+Distributed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
-bash
-Copiar
-Editar
-ollama run mistral
-Isso iniciará uma sessão interativa, permitindo que a API utilize o modelo para gerar comandos conforme requisitado pelo IA invader.
+---
 
-Integração com o IA invader:
+## Contact
 
-Certifique-se de que o serviço do Ollama com o modelo Mistral esteja em execução e configurado corretamente, para que a comunicação via API (na variável OLLAMA_API_URL) ocorra sem problemas.
+- **Author:** andha0  
+- **Email:** baleiaazul660@gmail.com  
+- **GitHub:** [your-profile](https://github.com/your-user)
 
-Feedback e Auto-Correção
-Confirmação Interativa:
-Antes da execução, a ferramenta exibe a interpretação da IA e pede confirmação do usuário.
+---
 
-Auto-Correção:
-Caso um comando resulte em erro, o IA invader permite tentar uma solução sugerida pela IA, enviando o erro para a API para uma nova geração de comando.
+> **Tip:** If you encounter any issues or have suggestions, open an *issue* on the repository or contact us via email. We are always looking to improve IA invader!
+```
 
-Logs e Histórico
-Registro de Comandos:
-Recomenda-se manter um sistema de logs registrando os comandos executados, seus resultados e erros, para facilitar a depuração e auditoria.
+This README now provides complete information about IA invader in English, including setup instructions for Ollama and Mistral. Let me know if you need further refinements!
 
-Histórico de Execuções:
-Uma funcionalidade para visualizar o histórico dos comandos pode ajudar na automação e repetição de tarefas.
-
-Contribuição
-Se você deseja contribuir para o projeto:
-
-Faça um fork deste repositório.
-
-Crie uma branch para sua nova funcionalidade ou correção:
-
-bash
-Copiar
-Editar
-git checkout -b feature/nova-funcionalidade
-Faça commit das alterações:
-
-bash
-Copiar
-Editar
-git commit -am 'Adiciona nova funcionalidade'
-Envie para o repositório remoto:
-
-bash
-Copiar
-Editar
-git push origin feature/nova-funcionalidade
-Abra um Pull Request com suas alterações.
-
-Sua contribuição é muito bem-vinda!
-
-Licença
-Distribuído sob a licença MIT. Consulte o arquivo LICENSE para mais detalhes.
-
-Contato
-Autor: Seu Nome
-
-Email: seu.email@exemplo.com
-
-GitHub: seu-perfil
-
-Dica Interativa:
-Se encontrar algum problema ou tiver sugestões para melhorias, abra uma issue no repositório ou entre em contato via email. Estamos sempre em busca de aprimorar o IA invader para proporcionar a melhor experiência de segurança possível!
-
-Aproveite e contribua para um ambiente de segurança mais inteligente e automatizado!
