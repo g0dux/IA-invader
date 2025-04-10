@@ -219,7 +219,7 @@ Distributed under the MIT License. See the [LICENSE](LICENSE) file for more deta
 
 - **Author:** andha0  
 - **Email:** baleiaazul660@gmail.com  
-- **GitHub:** [your-profile](https://github.com/your-user)
+- **GitHub:** [your-profile](https://github.com/your-user](https://github.com/g0dux/IA-invader)
 
 ---
 
