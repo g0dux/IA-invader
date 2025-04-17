@@ -12,7 +12,7 @@ import traceback # Para depuração de erros inesperados
 # --- Configuração ---
 OLLAMA_MODEL: str = "mistral"  # Modelo a ser usado com Ollama
 OLLAMA_API_URL: str = "http://localhost:11434/api/generate" # Endpoint da API Ollama
-REQUEST_TIMEOUT: int = 60 # Timeout para requisições Ollama em segundos
+REQUEST_TIMEOUT: int = 120 # Timeout aumentado para Ollama (análise pode levar mais tempo)
 
 # --- Estado Global ---
 spinner_running: bool = False
@@ -22,7 +22,6 @@ msg: Dict[str, Any] = {} # Dicionário para mensagens específicas do idioma
 
 # --- Constantes ---
 # Dicionário com links e instruções de instalação para ferramentas conhecidas.
-# Adicionadas mais ferramentas e instruções refinadas.
 DOWNLOAD_LINKS: Dict[str, Dict[str, Dict[str, Any]]] = {
     "nmap": {
         "windows": {
@@ -39,7 +38,7 @@ DOWNLOAD_LINKS: Dict[str, Dict[str, Dict[str, Any]]] = {
                 "pt": "Nmap não encontrado. Instale-o usando seu gerenciador de pacotes (ex.: 'sudo apt update && sudo apt install nmap' ou 'sudo dnf install nmap')."
             }
         },
-         "macos": { # Exemplo de suporte para macOS adicionado
+         "macos": {
             "link": "https://nmap.org/download.html",
             "instructions": {
                 "en": "Nmap not found. Install it using Homebrew ('brew install nmap') or download from the official site.",
@@ -70,7 +69,7 @@ DOWNLOAD_LINKS: Dict[str, Dict[str, Dict[str, Any]]] = {
             }
         }
     },
-    "ip": { # Específico para Linux geralmente
+    "ip": {
         "linux": {
             "link": "https://wiki.archlinux.org/title/Iproute2",
             "instructions": {
@@ -88,46 +87,42 @@ DOWNLOAD_LINKS: Dict[str, Dict[str, Dict[str, Any]]] = {
             }
         },
         "linux": {
-            "link": "", # Geralmente instalado via gerenciador de pacotes
+            "link": "",
             "instructions": {
                 "en": "'whois' not found. Install it using your package manager (e.g., 'sudo apt install whois' or 'sudo dnf install whois').",
                 "pt": "'whois' não encontrado. Instale usando seu gerenciador de pacotes (ex.: 'sudo apt install whois' ou 'sudo dnf install whois')."
             }
         },
         "macos": {
-            "link": "", # Geralmente pré-instalado ou via brew
+            "link": "",
             "instructions": {
                 "en": "'whois' not found. It might be pre-installed. If not, try 'brew install whois'.",
                 "pt": "'whois' não encontrado. Pode estar pré-instalado. Se não, tente 'brew install whois'."
             }
         }
     }
-    # Adicione mais ferramentas conforme necessário
 }
 
 # Dicionário de mensagens multilíngues
 LANGUAGES: Dict[str, Dict[str, Any]] = {
     "en": {
         "header": r"""
- 
- ██▓ ▄▄▄          ██▓ ███▄    █ ██▒   █▓ ▄▄▄      ▓█████▄ ▓█████  ██▀███  
-▓██▒▒████▄       ▓██▒ ██ ▀█   █▓██░   █▒▒████▄    ▒██▀ ██▌▓█   ▀ ▓██ ▒ ██▒
-▒██▒▒██  ▀█▄     ▒██▒▓██  ▀█ ██▒▓██  █▒░▒██  ▀█▄  ░██   █▌▒███   ▓██ ░▄█ ▒
-░██░░██▄▄▄▄██    ░██░▓██▒  ▐▌██▒ ▒██ █░░░██▄▄▄▄██ ░▓█▄   ▌▒▓█  ▄ ▒██▀▀█▄  
-░██░ ▓█   ▓██▒   ░██░▒██░   ▓██░  ▒▀█░   ▓█   ▓██▒░▒████▓ ░▒████▒░██▓ ▒██▒
-░▓   ▒▒   ▓▒█░   ░▓  ░ ▒░   ▒ ▒   ░ ▐░   ▒▒   ▓▒█░ ▒▒▓  ▒ ░░ ▒░ ░░ ▒▓ ░▒▓░
- ▒ ░  ▒   ▒▒ ░    ▒ ░░ ░░   ░ ▒░  ░ ░░    ▒   ▒▒ ░ ░ ▒  ▒  ░ ░  ░  ░▒ ░ ▒░
- ▒ ░  ░   ▒       ▒ ░   ░   ░ ░     ░░    ░   ▒    ░ ░  ░    ░     ░░   ░ 
- ░        ░  ░    ░           ░      ░        ░  ░   ░       ░  ░   ░     
-                                    ░              ░                      
-Invader v2.0
-""", # Arte ASCII atualizada
-        "welcome": "Welcome to IA invader v2 - Your Enhanced Local AI Security Assistant", # Nome atualizado
+
+▪   ▄▄▄·     ▪   ▐ ▄  ▌ ▐· ▄▄▄· ·▄▄▄▄  ▄▄▄ .▄▄▄  
+██ ▐█ ▀█     ██ •█▌▐█▪█·█▌▐█ ▀█ ██▪ ██ ▀▄.▀·▀▄ █·
+▐█·▄█▀▀█     ▐█·▐█▐▐▌▐█▐█•▄█▀▀█ ▐█· ▐█▌▐▀▀▪▄▐▀▀▄ 
+▐█▌▐█ ▪▐▌    ▐█▌██▐█▌ ███ ▐█ ▪▐▌██. ██ ▐█▄▄▌▐█•█▌
+▀▀▀ ▀  ▀     ▀▀▀▀▀ █▪. ▀   ▀  ▀ ▀▀▀▀▀•  ▀▀▀ .▀  ▀
+ Invader v2.1
+""", # Versão atualizada
+        "welcome": "Welcome to IA invader v2.1 - Your AI Security Assistant with Analysis", # Nome e versão atualizados
         "separator": "-----------------------------------------------------------------",
         "usage": "Usage: Enter your security task (e.g., 'scan example.com with nmap -sV')",
         "options": "Options: -h for help | -v for version | -lang to change language | -os to change OS",
         "help": (
             "\nUsage:\n  <Describe your task> (e.g., 'check open ports on 192.168.1.1 with nmap')\n"
+            "IA invader will generate a command, execute it (with confirmation),\n"
+            "analyze the output, and suggest follow-up actions.\n"
             "Supported tools depend on your system and Ollama's knowledge.\n"
             "Common examples: nmap, nikto, whois, ping, traceroute, dig, etc.\n"
             "Options:\n"
@@ -137,25 +132,31 @@ Invader v2.0
             "  -os : Change target OS for command generation\n"
             "  exit : Quit the application\n"
         ),
-        "version": f"IA invader v2.0 - Powered by Ollama ({OLLAMA_MODEL})", # Nome atualizado
-        "input": "\nIA invader> ", # Nome atualizado
-        "thinking": "IA invader is thinking... 🤔", # Nome atualizado
-        "interpreting": "IA invader is interpreting the command... 🧐", # Nome atualizado
-        "correcting": "IA invader is attempting to correct the command... 🛠️", # Nome atualizado
+        "version": f"IA invader v2.1 - Powered by Ollama ({OLLAMA_MODEL})", # Versão atualizada
+        "input": "\nIA invader> ",
+        "thinking": "IA invader is thinking... 🤔",
+        "interpreting": "IA invader is interpreting the command... 🧐",
+        "correcting": "IA invader is attempting to correct the command... 🛠️",
+        "analyzing": "IA invader is analyzing the output... 🔬", # Nova mensagem
+        "suggesting": "IA invader is suggesting next steps... 👉", # Nova mensagem
         "ai_generated": "\n🤖 AI Generated Command:",
         "ai_interpreted": "🤖 AI Interpretation:",
         "ai_corrected": "\n🤖 AI Corrected Command Suggestion:",
+        "ai_analysis": "\n📊 AI Analysis of Output:", # Nova mensagem
+        "ai_followup": "\n💡 AI Suggested Follow-up Commands:", # Nova mensagem
         "confirm": "Do you want to execute this command? (y/n): ",
         "execute": "🚀 Executing:",
-        "ready": "\n✅ IA invader is ready for your next command! (Type 'exit' to quit)\n", # Nome atualizado
+        "ready": "\n✅ IA invader is ready for your next command! (Type 'exit' to quit)\n",
         "cancel": "❌ Command execution canceled by the user.",
         "error_fetch": "🚫 Failed to generate command via Ollama.",
         "error_interpret": "🚫 Failed to get interpretation from Ollama.",
         "error_correct": "🚫 Failed to get correction from Ollama.",
+        "error_analyze": "🚫 Failed to get analysis from Ollama.", # Nova mensagem
+        "error_suggest": "🚫 Failed to get suggestions from Ollama.", # Nova mensagem
         "error_ollama_comm": "🚫 Error communicating with Ollama API:",
         "error_ollama_conn": "🚫 Error connecting to Ollama API. Is Ollama running?",
         "error_invalid_req": "🚫 The request doesn't seem to translate into a valid shell command.",
-        "error_permission": "🚫 Permission Denied: Cannot execute the command. Try running IA invader with administrator/root privileges if necessary.", # Nome atualizado
+        "error_permission": "🚫 Permission Denied: Cannot execute the command. Try running IA invader with administrator/root privileges if necessary.",
         "error_not_found": "🚫 Command not found:",
         "error_general": "🚫 An error occurred during execution:",
         "goodbye": "\n👋 Goodbye!",
@@ -165,6 +166,8 @@ Invader v2.0
         "lang_options": "1. English\n2. Português\nChoice / Escolha (1/2): ",
         "auto_correct_q": "The command failed. Would you like to ask the AI for a correction? (y/n): ",
         "no_correction": "🤷 No alternative command suggested by AI.",
+        "no_analysis": "🤷 AI could not provide an analysis for this output.", # Nova mensagem
+        "no_suggestions": "🤷 AI could not provide follow-up suggestions.", # Nova mensagem
         "tool_hint": "Hint:",
         "tool_hint_generic": "Ensure the required tool is installed and available in your system's PATH.",
         "lang_set_by_arg": "Language set to {lang} by argument.",
@@ -173,24 +176,21 @@ Invader v2.0
     "pt": {
         "header": r"""
 
- ██▓ ▄▄▄          ██▓ ███▄    █ ██▒   █▓ ▄▄▄      ▓█████▄ ▓█████  ██▀███  
-▓██▒▒████▄       ▓██▒ ██ ▀█   █▓██░   █▒▒████▄    ▒██▀ ██▌▓█   ▀ ▓██ ▒ ██▒
-▒██▒▒██  ▀█▄     ▒██▒▓██  ▀█ ██▒▓██  █▒░▒██  ▀█▄  ░██   █▌▒███   ▓██ ░▄█ ▒
-░██░░██▄▄▄▄██    ░██░▓██▒  ▐▌██▒ ▒██ █░░░██▄▄▄▄██ ░▓█▄   ▌▒▓█  ▄ ▒██▀▀█▄  
-░██░ ▓█   ▓██▒   ░██░▒██░   ▓██░  ▒▀█░   ▓█   ▓██▒░▒████▓ ░▒████▒░██▓ ▒██▒
-░▓   ▒▒   ▓▒█░   ░▓  ░ ▒░   ▒ ▒   ░ ▐░   ▒▒   ▓▒█░ ▒▒▓  ▒ ░░ ▒░ ░░ ▒▓ ░▒▓░
- ▒ ░  ▒   ▒▒ ░    ▒ ░░ ░░   ░ ▒░  ░ ░░    ▒   ▒▒ ░ ░ ▒  ▒  ░ ░  ░  ░▒ ░ ▒░
- ▒ ░  ░   ▒       ▒ ░   ░   ░ ░     ░░    ░   ▒    ░ ░  ░    ░     ░░   ░ 
- ░        ░  ░    ░           ░      ░        ░  ░   ░       ░  ░   ░     
-                                    ░              ░                      
-Invader v2.0
-""", # Arte ASCII atualizada
-        "welcome": "Bem-vindo ao IA invader v2 - Seu Assistente de Segurança Local com IA Aprimorado", # Nome atualizado
+▪   ▄▄▄·     ▪   ▐ ▄  ▌ ▐· ▄▄▄· ·▄▄▄▄  ▄▄▄ .▄▄▄  
+██ ▐█ ▀█     ██ •█▌▐█▪█·█▌▐█ ▀█ ██▪ ██ ▀▄.▀·▀▄ █·
+▐█·▄█▀▀█     ▐█·▐█▐▐▌▐█▐█•▄█▀▀█ ▐█· ▐█▌▐▀▀▪▄▐▀▀▄ 
+▐█▌▐█ ▪▐▌    ▐█▌██▐█▌ ███ ▐█ ▪▐▌██. ██ ▐█▄▄▌▐█•█▌
+▀▀▀ ▀  ▀     ▀▀▀▀▀ █▪. ▀   ▀  ▀ ▀▀▀▀▀•  ▀▀▀ .▀  ▀
+ Invader v2.1
+""", # Versão atualizada
+        "welcome": "Bem-vindo ao IA invader v2.1 - Seu Assistente de Segurança IA com Análise", # Nome e versão atualizados
         "separator": "-----------------------------------------------------------------",
         "usage": "Uso: Descreva sua tarefa de segurança (ex: 'escanear example.com com nmap -sV')",
         "options": "Opções: -h para ajuda | -v para versão | -lang para mudar idioma | -os para mudar SO",
         "help": (
             "\nUso:\n  <Descreva sua tarefa> (ex: 'verificar portas abertas em 192.168.1.1 com nmap')\n"
+            "O IA invader irá gerar um comando, executá-lo (com confirmação),\n"
+            "analisar a saída e sugerir ações de acompanhamento.\n"
             "Ferramentas suportadas dependem do seu sistema e do conhecimento do Ollama.\n"
             "Exemplos comuns: nmap, nikto, whois, ping, traceroute, dig, etc.\n"
             "Opções:\n"
@@ -200,25 +200,31 @@ Invader v2.0
             "  -os : Muda o SO alvo para geração de comandos\n"
             "  exit : Sai da aplicação\n"
         ),
-        "version": f"IA invader v2.0 - Alimentado por Ollama ({OLLAMA_MODEL})", # Nome atualizado
-        "input": "\nIA invader> ", # Nome atualizado
-        "thinking": "IA invader está pensando... 🤔", # Nome atualizado
-        "interpreting": "IA invader está interpretando o comando... 🧐", # Nome atualizado
-        "correcting": "IA invader está tentando corrigir o comando... 🛠️", # Nome atualizado
+        "version": f"IA invader v2.1 - Alimentado por Ollama ({OLLAMA_MODEL})", # Versão atualizada
+        "input": "\nIA invader> ",
+        "thinking": "IA invader está pensando... 🤔",
+        "interpreting": "IA invader está interpretando o comando... 🧐",
+        "correcting": "IA invader está tentando corrigir o comando... 🛠️",
+        "analyzing": "IA invader está analisando a saída... 🔬", # Nova mensagem
+        "suggesting": "IA invader está sugerindo próximos passos... 👉", # Nova mensagem
         "ai_generated": "\n🤖 Comando Gerado pela IA:",
         "ai_interpreted": "🤖 Interpretação da IA:",
         "ai_corrected": "\n🤖 Sugestão de Correção da IA:",
+        "ai_analysis": "\n📊 Análise da IA sobre a Saída:", # Nova mensagem
+        "ai_followup": "\n💡 Sugestões da IA para Próximos Comandos:", # Nova mensagem
         "confirm": "Deseja executar este comando? (s/n): ",
         "execute": "🚀 Executando:",
-        "ready": "\n✅ IA invader está pronto para o próximo comando! (Digite 'exit' para sair)\n", # Nome atualizado
+        "ready": "\n✅ IA invader está pronto para o próximo comando! (Digite 'exit' para sair)\n",
         "cancel": "❌ Execução do comando cancelada pelo usuário.",
         "error_fetch": "🚫 Falha ao gerar comando via Ollama.",
         "error_interpret": "🚫 Falha ao obter interpretação do Ollama.",
         "error_correct": "🚫 Falha ao obter correção do Ollama.",
+        "error_analyze": "🚫 Falha ao obter análise do Ollama.", # Nova mensagem
+        "error_suggest": "🚫 Falha ao obter sugestões do Ollama.", # Nova mensagem
         "error_ollama_comm": "🚫 Erro ao comunicar com a API Ollama:",
         "error_ollama_conn": "🚫 Erro ao conectar à API Ollama. O Ollama está rodando?",
         "error_invalid_req": "🚫 A solicitação não parece traduzir-se num comando de shell válido.",
-        "error_permission": "🚫 Permissão Negada: Não é possível executar o comando. Tente rodar o IA invader com privilégios de administrador/root se necessário.", # Nome atualizado
+        "error_permission": "🚫 Permissão Negada: Não é possível executar o comando. Tente rodar o IA invader com privilégios de administrador/root se necessário.",
         "error_not_found": "🚫 Comando não encontrado:",
         "error_general": "🚫 Ocorreu um erro durante a execução:",
         "goodbye": "\n👋 Adeus!",
@@ -228,6 +234,8 @@ Invader v2.0
         "lang_options": "1. English\n2. Português\nChoice / Escolha (1/2): ",
         "auto_correct_q": "O comando falhou. Deseja pedir uma correção à IA? (s/n): ",
         "no_correction": "🤷 Nenhuma sugestão de comando alternativo pela IA.",
+        "no_analysis": "🤷 A IA não pôde fornecer uma análise para esta saída.", # Nova mensagem
+        "no_suggestions": "🤷 A IA não pôde fornecer sugestões de acompanhamento.", # Nova mensagem
         "tool_hint": "Dica:",
         "tool_hint_generic": "Certifique-se de que a ferramenta necessária está instalada e disponível no PATH do seu sistema.",
         "lang_set_by_arg": "Idioma definido para {lang} por argumento.",
@@ -244,7 +252,6 @@ def print_color(text: str, color_code: str):
 def select_language():
     """Permite ao usuário selecionar o idioma da interface."""
     global selected_lang, msg
-    # Usa msg.get para evitar erro se msg ainda não estiver totalmente inicializado
     prompt_text = msg.get("lang_select", "Select language / Selecione o idioma:")
     options_text = msg.get("lang_options", "Choice / Escolha (1/2): ")
 
@@ -255,8 +262,7 @@ def select_language():
     if choice == "2":
         selected_lang = "pt"
     else:
-        selected_lang = "en" # Padrão para Inglês
-    # Atualiza o dicionário global msg AGORA que selected_lang está definido
+        selected_lang = "en"
     msg = LANGUAGES[selected_lang]
     print_color(f"Language set to {selected_lang.upper()}", "\033[92m") # Verde
 
@@ -270,12 +276,11 @@ def select_os():
     elif choice == "3":
         selected_os = "macos"
     else:
-        selected_os = "linux" # Padrão para Linux
+        selected_os = "linux"
     print_color(f"Target OS set to {selected_os.upper()}", "\033[92m") # Verde
 
 def display_header():
     """Exibe o cabeçalho da aplicação e mensagens iniciais."""
-    # Garante que msg está definido antes de chamar esta função
     if not msg:
         print("Error: Message dictionary not initialized.")
         return
@@ -314,15 +319,12 @@ def get_missing_tool_hint(tool_name: str) -> str:
 def show_spinner(message: str):
     """Exibe um spinner animado no terminal."""
     global spinner_running
-    # Frames de spinner modernos Unicode Braille
     frames = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
     frame_cycle = cycle(frames)
     while spinner_running:
-        # Usa stderr para evitar interferir com o pipe stdout do comando
         sys.stderr.write(f"\r\033[96m{next(frame_cycle)} {message}\033[0m") # Ciano
         sys.stderr.flush()
         time.sleep(0.1)
-    # Limpa a linha do spinner
     sys.stderr.write("\r" + " " * (len(message) + 5) + "\r")
     sys.stderr.flush()
 
@@ -338,7 +340,7 @@ def stop_spinner(spinner_thread: Thread):
     """Para a thread de animação do spinner."""
     global spinner_running
     spinner_running = False
-    spinner_thread.join(timeout=0.5) # Dá um momento para a thread terminar
+    spinner_thread.join(timeout=0.5)
 
 # --- Interação com Ollama ---
 
@@ -349,35 +351,35 @@ def _ollama_request(prompt: str, operation_desc_key: str) -> Optional[str]:
         "prompt": prompt,
         "stream": False
     }
-    # Usa msg.get com um fallback caso msg não esteja pronto
     spinner_message = msg.get(operation_desc_key, "Processing...")
     spinner_thread = start_spinner(spinner_message)
     try:
         response = requests.post(OLLAMA_API_URL, json=payload, timeout=REQUEST_TIMEOUT)
-        response.raise_for_status() # Levanta HTTPError para respostas ruins (4xx ou 5xx)
+        response.raise_for_status()
         response_data = response.json()
         result = response_data.get('response', '').strip()
-        # Limpa potenciais blocos de código markdown ou aspas
         result = result.removeprefix("```bash").removeprefix("```").removesuffix("```")
         result = result.strip('`"\'\n ')
-        return result
+        # Retorna None se o resultado for explicitamente vazio após limpeza,
+        # indicando que a IA pode não ter tido nada a dizer.
+        return result if result else None
     except requests.exceptions.ConnectionError:
-        print_color(f"\n{msg.get('error_ollama_conn', 'Connection Error')}", "\033[91m") # Vermelho
+        print_color(f"\n{msg.get('error_ollama_conn', 'Connection Error')}", "\033[91m")
         return None
     except requests.exceptions.Timeout:
         timeout_msg = msg.get('error_ollama_comm', 'Communication Error:') + f" Request timed out after {REQUEST_TIMEOUT} seconds."
-        print_color(f"\n{timeout_msg}", "\033[91m") # Vermelho
+        print_color(f"\n{timeout_msg}", "\033[91m")
         return None
     except requests.exceptions.RequestException as e:
         comm_error_msg = msg.get('error_ollama_comm', 'Communication Error:')
-        print_color(f"\n{comm_error_msg} {e}", "\033[91m") # Vermelho
+        print_color(f"\n{comm_error_msg} {e}", "\033[91m")
         return None
     finally:
         stop_spinner(spinner_thread)
 
 
 def ask_ollama_for_command(user_request: str) -> Optional[str]:
-    """Pede ao Ollama para gerar um comando shell baseado na requisição do usuário."""
+    """Pede ao Ollama para gerar um comando shell."""
     prompt = (
         f"You are an expert system command generator. Your task is to convert the user's natural language request "
         f"into a *single*, *valid*, and *directly executable* shell command for the specified operating system. "
@@ -395,44 +397,39 @@ def ask_ollama_for_command(user_request: str) -> Optional[str]:
     command = _ollama_request(prompt, "thinking")
 
     if command == "invalid-request":
-        print_color(f"\n{msg['error_invalid_req']}", "\033[91m") # Vermelho
+        print_color(f"\n{msg['error_invalid_req']}", "\033[91m")
         return None
     elif not command:
-        print_color(f"\n{msg['error_fetch']}", "\033[91m") # Vermelho
+        print_color(f"\n{msg['error_fetch']}", "\033[91m")
         return None
-
     return command
 
 def ask_ollama_for_interpretation(user_request: str, command: str) -> str:
     """Pede ao Ollama para explicar o comando gerado."""
-    # Tenta obter o nome do idioma de forma mais segura
-    lang_name = "English" # Fallback
+    lang_name = "English"
     if selected_lang in LANGUAGES and 'welcome' in LANGUAGES[selected_lang]:
          try:
-             # Tenta obter o nome da IA do welcome message para consistência
              lang_name = LANGUAGES[selected_lang]['welcome'].split(' to ')[1].split(' v')[0]
          except IndexError:
               try:
-                  # Fallback para pegar a segunda palavra se ' to ' não estiver lá
                   lang_name = LANGUAGES[selected_lang]['welcome'].split()[1]
               except IndexError:
-                  pass # Mantém o fallback 'English'
+                  pass
 
     prompt = (
-        f"You are a helpful assistant explaining shell commands. The user wants to perform a task and you generated a command.\n"
+        f"You are a helpful assistant explaining shell commands.\n"
         f"Target OS: {selected_os.upper()}\n"
         f"User's Language (for explanation): {selected_lang.upper()}\n"
         f"Original User Request: \"{user_request}\"\n"
         f"Generated Command: `{command}`\n\n"
-        f"Task: Provide a concise explanation of what this command does, focusing on its main purpose and key flags/options. "
-        f"Explain it in {lang_name}. Keep it brief (2-3 sentences max).\n\n" # Usa o nome extraído
+        f"Task: Provide a concise explanation (2-3 sentences max) in {lang_name} of what this command does, focusing on its main purpose and key flags/options.\n\n"
         f"Explanation:"
     )
     explanation = _ollama_request(prompt, "interpreting")
     return explanation if explanation else ""
 
 def ask_ollama_for_correction(user_request: str, original_command: str, error_output: str) -> Optional[str]:
-    """Pede ao Ollama para sugerir um comando corrigido baseado em um erro."""
+    """Pede ao Ollama para sugerir um comando corrigido."""
     prompt = (
         f"You are an expert system command corrector. A user tried to execute a command based on their request, but it failed.\n"
         f"Target OS: {selected_os.upper()}\n"
@@ -450,122 +447,181 @@ def ask_ollama_for_correction(user_request: str, original_command: str, error_ou
     corrected_command = _ollama_request(prompt, "correcting")
 
     if corrected_command == "no-suggestion":
-        print_color(f"\n{msg['no_correction']}", "\033[93m") # Amarelo
+        print_color(f"\n{msg['no_correction']}", "\033[93m")
         return None
     elif not corrected_command:
-         print_color(f"\n{msg['error_correct']}", "\033[91m") # Vermelho
+         print_color(f"\n{msg['error_correct']}", "\033[91m")
          return None
-
     return corrected_command
+
+def ask_ollama_for_analysis(user_request: str, command: str, stdout: str, stderr: str) -> Optional[str]:
+    """Pede ao Ollama para analisar a saída do comando."""
+    # Limita o tamanho da saída enviada para análise para evitar prompts excessivamente longos
+    max_output_len = 2000 # Ajuste conforme necessário
+    truncated_stdout = stdout[:max_output_len] + ("..." if len(stdout) > max_output_len else "")
+    truncated_stderr = stderr[:max_output_len] + ("..." if len(stderr) > max_output_len else "")
+
+    if not truncated_stdout and not truncated_stderr:
+        return msg.get("no_analysis", "No output to analyze.") # Não há nada para analisar
+
+    prompt = (
+        f"You are a security analysis assistant. A command was executed based on a user request. Analyze the output.\n"
+        f"Target OS: {selected_os.upper()}\n"
+        f"User's Language (for analysis summary): {selected_lang.upper()}\n"
+        f"Original User Request: \"{user_request}\"\n"
+        f"Executed Command: `{command}`\n"
+        f"Standard Output (stdout):\n---\n{truncated_stdout}\n---\n"
+        f"Standard Error (stderr):\n---\n{truncated_stderr}\n---\n\n"
+        f"Task: Provide a brief analysis in {selected_lang.upper()} focusing on:\n"
+        f"1. Key findings or results relevant to the user's request.\n"
+        f"2. Any potential security issues, open ports, vulnerabilities, or interesting information discovered (if applicable).\n"
+        f"3. A concise summary (2-4 bullet points or a short paragraph).\n"
+        f"If the output is uninformative or just shows an error already handled, state that briefly.\n\n"
+        f"Analysis:"
+    )
+    analysis = _ollama_request(prompt, "analyzing")
+
+    if not analysis:
+        print_color(f"\n{msg.get('no_analysis', 'AI could not provide an analysis.')}", "\033[93m") # Amarelo
+        return None
+    return analysis
+
+def ask_ollama_for_followup(user_request: str, command: str, stdout: str, stderr: str, analysis: Optional[str]) -> Optional[List[str]]:
+    """Pede ao Ollama para sugerir comandos de acompanhamento."""
+    max_output_len = 1500 # Limita a saída para o prompt de acompanhamento
+    truncated_stdout = stdout[:max_output_len] + ("..." if len(stdout) > max_output_len else "")
+    truncated_stderr = stderr[:max_output_len] + ("..." if len(stderr) > max_output_len else "")
+
+    analysis_context = f"Previous Analysis Summary:\n---\n{analysis}\n---\n" if analysis else "No previous analysis available.\n"
+
+    prompt = (
+        f"You are a security workflow assistant. Based on the previous command execution and its results (and analysis if available), suggest relevant next steps.\n"
+        f"Target OS: {selected_os.upper()}\n"
+        f"User's Language (for context): {selected_lang.upper()}\n"
+        f"Original User Request: \"{user_request}\"\n"
+        f"Executed Command: `{command}`\n"
+        f"Standard Output (stdout):\n---\n{truncated_stdout}\n---\n"
+        f"Standard Error (stderr):\n---\n{truncated_stderr}\n---\n"
+        f"{analysis_context}"
+        f"Task: Suggest 1 to 3 relevant follow-up shell commands for the target OS ({selected_os}) that would logically follow from these results. Examples: deeper scans, vulnerability checks, service enumeration, information gathering.\n"
+        f"Constraints:\n"
+        f"- Output *only* the raw suggested shell commands, each on a new line.\n"
+        f"- Do not include explanations, numbering, or any text other than the commands.\n"
+        f"- If no logical follow-up command comes to mind, output the exact string: 'no-suggestion'.\n\n"
+        f"Suggested Follow-up Commands:"
+    )
+    suggestions_raw = _ollama_request(prompt, "suggesting")
+
+    if not suggestions_raw or suggestions_raw == "no-suggestion":
+        print_color(f"\n{msg.get('no_suggestions', 'AI could not provide follow-up suggestions.')}", "\033[93m") # Amarelo
+        return None
+
+    # Divide as sugestões em uma lista, removendo linhas vazias
+    suggestions = [cmd.strip() for cmd in suggestions_raw.split('\n') if cmd.strip()]
+
+    if not suggestions:
+        print_color(f"\n{msg.get('no_suggestions', 'AI could not provide follow-up suggestions.')}", "\033[93m") # Amarelo
+        return None
+
+    return suggestions
+
 
 # --- Execução de Comando ---
 
 def run_command(command: str) -> Tuple[int, str, str]:
     """
-    Executa o comando shell e captura sua saída.
-
-    Retorna:
-        Tuple[int, str, str]: (return_code, stdout, stderr)
+    Executa o comando shell e captura sua saída. Retorna (código_retorno, stdout, stderr).
     """
     print_color(f"{msg['execute']} {command}", "\033[92m") # Verde
-    # Tenta obter o nome da ferramenta de forma mais segura
     tool_name_for_spinner = command.split()[0] if command else "command"
     spinner_thread = start_spinner(f"Running '{tool_name_for_spinner}'...")
 
     stdout_lines: List[str] = []
     stderr_lines: List[str] = []
-    process = None # Inicializa o processo como None
+    process = None
 
     try:
-        # Usa Popen para streaming de saída em tempo real (opcional, mas bom para comandos longos)
         process = subprocess.Popen(
             command,
-            shell=True, # Tenha cuidado com shell=True
+            shell=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
-            encoding='utf-8', # Define explicitamente a codificação
-            errors='replace' # Trata potenciais erros de decodificação
+            encoding='utf-8',
+            errors='replace'
         )
 
-        # Lê stdout e stderr linha por linha
-        if process.stdout:
-            for line in iter(process.stdout.readline, ''):
-                print(line, end='') # Imprime a linha stdout imediatamente
-                stdout_lines.append(line)
-        if process.stderr:
-             for line in iter(process.stderr.readline, ''):
-                print_color(line, "\033[91m") # Imprime a linha stderr imediatamente em vermelho
-                stderr_lines.append(line)
-
-        process.wait() # Espera o processo completar
+        # Captura stdout e stderr
+        stdout, stderr = process.communicate()
         return_code = process.returncode
 
+        # Imprime a saída após a conclusão
+        if stdout:
+            print("\n--- Output ---")
+            print(stdout)
+            print("--------------")
+        if stderr:
+            print("\n--- Error Output ---")
+            print_color(stderr, "\033[91m") # Vermelho
+            print("--------------------")
+
+
     except FileNotFoundError:
-        # Captura se o próprio comando não for encontrado
         stop_spinner(spinner_thread)
         tool_name = command.split()[0] if command else "Command"
-        print_color(f"\n{msg['error_not_found']} '{tool_name}'", "\033[91m") # Vermelho
-        print_color(f"{msg['tool_hint']} {get_missing_tool_hint(tool_name)}", "\033[93m") # Amarelo
-        return -1, "", f"{tool_name}: command not found" # Simula código de retorno e stderr
+        print_color(f"\n{msg['error_not_found']} '{tool_name}'", "\033[91m")
+        print_color(f"{msg['tool_hint']} {get_missing_tool_hint(tool_name)}", "\033[93m")
+        return -1, "", f"{tool_name}: command not found"
     except PermissionError:
         stop_spinner(spinner_thread)
-        print_color(f"\n{msg['error_permission']}", "\033[91m") # Vermelho
-        return -2, "", "Permission denied" # Simula código de retorno e stderr
+        print_color(f"\n{msg['error_permission']}", "\033[91m")
+        return -2, "", "Permission denied"
     except Exception as e:
         stop_spinner(spinner_thread)
-        print_color(f"\n{msg['error_general']} {e}", "\033[91m") # Vermelho
-        # Garante que o processo seja terminado se existir e ainda estiver rodando
+        print_color(f"\n{msg['error_general']} {e}", "\033[91m")
         if process and process.poll() is None:
             process.terminate()
             process.wait()
-        return -3, "", str(e) # Simula código de retorno e stderr
+        return -3, "", str(e)
     finally:
-        # Garante que o spinner pare mesmo se ocorrerem exceções
         if 'spinner_thread' in locals() and spinner_thread.is_alive():
              stop_spinner(spinner_thread)
-        # Garante que os streams do processo sejam fechados se o processo foi criado
-        if process:
-            if process.stdout:
-                process.stdout.close()
-            if process.stderr:
-                process.stderr.close()
+        # Não feche stdout/stderr aqui se usar communicate()
 
+    # Garante que stdout e stderr sejam strings
+    stdout = stdout or ""
+    stderr = stderr or ""
 
-    stdout = "".join(stdout_lines)
-    stderr = "".join(stderr_lines)
-
-    # Verifica stderr para padrões de erro comuns mesmo se o código de retorno for 0 (algumas ferramentas reportam erros para stderr)
-    if return_code != 0 and not stderr: # Se código de erro mas sem stderr, fornece mensagem genérica
+    # Lógica de erro aprimorada
+    if return_code != 0 and not stderr:
         stderr = f"Command exited with status {return_code}"
 
     if return_code != 0 and stderr:
-         # Verifica variações de 'command not found' de forma mais robusta
         stderr_lower = stderr.lower()
         tool_name = command.split()[0] if command else "Command"
         if "command not found" in stderr_lower or \
            "não é reconhecido" in stderr_lower or \
            "not recognized" in stderr_lower or \
            "no such file or directory" in stderr_lower:
-            print_color(f"{msg['tool_hint']} {get_missing_tool_hint(tool_name)}", "\033[93m") # Amarelo
+            print_color(f"{msg['tool_hint']} {get_missing_tool_hint(tool_name)}", "\033[93m")
 
     return return_code, stdout, stderr
 
 
 def confirm_and_execute(user_request: str, command: str, is_correction: bool = False):
-    """Trata confirmação, execução e loop de correção potencial."""
+    """Trata confirmação, execução, análise, sugestão e correção."""
 
     explanation = ask_ollama_for_interpretation(user_request, command)
 
     print_color(msg['ai_generated'] if not is_correction else msg['ai_corrected'], "\033[94m") # Azul
-    print_color(command, "\033[93m") # Texto do comando em amarelo
+    print_color(command, "\033[93m") # Amarelo
 
     if explanation:
         print_color("\n" + msg["ai_interpreted"], "\033[94m") # Azul
-        print_color(explanation, "\033[92m") # Texto da explicação em verde
+        print_color(explanation, "\033[92m") # Verde
 
     # Confirmação
-    confirm_prompt = "\033[96m" + msg["confirm"] + "\033[0m" # Prompt em ciano
+    confirm_prompt = "\033[96m" + msg["confirm"] + "\033[0m" # Ciano
     user_confirm = input(confirm_prompt).strip().lower()
     should_execute = user_confirm == 's' if selected_lang == "pt" else user_confirm == 'y'
 
@@ -574,71 +630,74 @@ def confirm_and_execute(user_request: str, command: str, is_correction: bool = F
         return # Para se o usuário cancelar
 
     # Execução
-    ret_code, _, err_output = run_command(command)
+    ret_code, stdout, stderr = run_command(command)
 
-    # Trata falha potencial e auto-correção
+    # Análise e Sugestões (mesmo se houver erro, a saída pode ser útil)
+    analysis = None
+    if stdout or stderr: # Tenta analisar se houver qualquer saída
+        analysis = ask_ollama_for_analysis(user_request, command, stdout, stderr)
+        if analysis:
+            print_color(msg["ai_analysis"], "\033[94m") # Azul
+            print_color(analysis, "\033[92m") # Verde
+        # else: Mensagem de "sem análise" já foi impressa
+
+        suggestions = ask_ollama_for_followup(user_request, command, stdout, stderr, analysis)
+        if suggestions:
+            print_color(msg["ai_followup"], "\033[94m") # Azul
+            for i, sug_cmd in enumerate(suggestions):
+                print_color(f"  {i+1}. {sug_cmd}", "\033[93m") # Amarelo
+        # else: Mensagem de "sem sugestões" já foi impressa
+
+    # Tratamento de Erro e Correção
     if ret_code != 0:
         print_color(f"\nCommand failed with exit code {ret_code}.", "\033[91m") # Vermelho
-        if err_output and not is_correction: # Oferece correção apenas na *primeira* falha
-            correction_q_prompt = "\033[96m" + msg["auto_correct_q"] + "\033[0m" # Prompt em ciano
+        if stderr and not is_correction: # Oferece correção na primeira falha com saída de erro
+            correction_q_prompt = "\033[96m" + msg["auto_correct_q"] + "\033[0m" # Ciano
             user_wants_correction = input(correction_q_prompt).strip().lower()
             should_correct = (user_wants_correction == 'y' and selected_lang == "en") or \
                              (user_wants_correction == 's' and selected_lang == "pt")
 
             if should_correct:
-                corrected_command = ask_ollama_for_correction(user_request, command, err_output)
+                corrected_command = ask_ollama_for_correction(user_request, command, stderr) # Usa stderr para correção
                 if corrected_command:
                     # Chama recursivamente para confirmar e executar o comando *corrigido*
+                    # Note: A análise/sugestão ocorrerá novamente para o comando corrigido
                     confirm_and_execute(user_request, corrected_command, is_correction=True)
-                # else: IA não pôde sugerir uma correção (mensagem já impressa por ask_ollama_for_correction)
+                # else: AI não pôde sugerir correção
 
 # --- Lógica Principal da Aplicação ---
 
 def main():
-    """Função principal para rodar a aplicação IA invader.""" # Nome atualizado no docstring
-    # Declara globais usadas/modificadas em main para clareza
+    """Função principal para rodar a aplicação IA invader."""
     global msg, selected_lang, selected_os
 
-    # Trata argumentos de linha de comando para configuração inicial (opcional)
-    # Estes argumentos podem sobrescrever os padrões definidos globalmente
+    # Tratamento de argumentos de linha de comando
     lang_overridden_by_arg = False
     if len(sys.argv) > 1:
         if "-lang=pt" in sys.argv:
             selected_lang = "pt"
-            # Garante que msg seja atualizado imediatamente se lang for definido por arg
             msg = LANGUAGES[selected_lang]
             lang_overridden_by_arg = True
-            # Usa msg.get para a mensagem formatada, com fallback
             lang_set_msg = msg.get("lang_set_by_arg", "Language set to {lang} by argument.").format(lang=selected_lang.upper())
-            print_color(lang_set_msg, "\033[92m") # Verde
+            print_color(lang_set_msg, "\033[92m")
         elif "-lang=en" in sys.argv:
              selected_lang = "en"
-             # Garante que msg seja atualizado imediatamente se lang for definido por arg
              msg = LANGUAGES[selected_lang]
              lang_overridden_by_arg = True
-             # Usa msg.get para a mensagem formatada, com fallback
              lang_set_msg = msg.get("lang_set_by_arg", "Language set to {lang} by argument.").format(lang=selected_lang.upper())
-             print_color(lang_set_msg, "\033[92m") # Verde
-        # Adicione verificações similares para -os aqui, definindo selected_os
+             print_color(lang_set_msg, "\033[92m")
 
-    # Seleções iniciais usando prompts interativos se não definidos por args
+    # Seleções iniciais se não definidas por args
     if not lang_overridden_by_arg:
-        # Se o idioma não foi definido por argumento, chama a função de seleção.
-        # Esta função define ambos global selected_lang e global msg.
         select_language()
-    # else: msg já foi definido baseado no argumento de linha de comando
 
-    # msg agora está garantido de estar definido corretamente baseado em selected_lang
-    # Agora, trata a seleção de SO (poderia adicionar tratamento de arg para -os também)
-    select_os() # Isso define global selected_os
-
-    # Exibe o cabeçalho usando o dicionário msg agora corretamente definido
+    select_os()
     display_header()
 
     # --- Loop Principal ---
     while True:
         try:
-            user_input = input(msg["input"]).strip() # Usa o prompt atualizado
+            user_input = input(msg["input"]).strip()
 
             if not user_input:
                 continue
@@ -652,12 +711,10 @@ def main():
                 show_version()
                 continue
             elif user_input == "-lang":
-                # Permite mudar o idioma durante a sessão
                 select_language()
-                display_header() # Reexibe o cabeçalho com o novo idioma
+                display_header()
                 continue
             elif user_input == "-os":
-                # Permite mudar o SO durante a sessão
                 select_os()
                 continue
 
@@ -665,42 +722,37 @@ def main():
             command = ask_ollama_for_command(user_input)
 
             if command:
-                # Verifica se a ferramenta primária existe *antes* da confirmação (opcional, mas útil)
-                # Trata potenciais comandos com caminhos ou estruturas complexas
                 tool_name = command.split()[0] if command else ""
-                # Verificação básica, pode precisar de refinamento para caminhos/aliases complexos
+                proceed_anyway = True # Assume que prossegue por padrão
                 if tool_name and '/' not in tool_name and '\\' not in tool_name:
                     if not check_command_exists(tool_name):
                         warn_msg = msg.get("error_not_found", "Command not found:") + f" '{tool_name}' (might not be installed or in PATH)."
-                        print_color(f"\nWarning: {warn_msg}", "\033[93m") # Amarelo
-                        print_color(f"{msg['tool_hint']} {get_missing_tool_hint(tool_name)}", "\033[93m") # Amarelo
-                        # Pergunta ao usuário se deseja prosseguir mesmo assim
+                        print_color(f"\nWarning: {warn_msg}", "\033[93m")
+                        print_color(f"{msg['tool_hint']} {get_missing_tool_hint(tool_name)}", "\033[93m")
                         proceed_prompt = msg.get("proceed_q", "Proceed anyway? (y/n): ")
                         proceed = input(proceed_prompt).strip().lower()
                         should_proceed = proceed == 's' if selected_lang == "pt" else proceed == 'y'
                         if not should_proceed:
-                            print_color(msg["cancel"], "\033[91m") # Vermelho
-                            continue
-                    # else: Ferramenta existe, prossegue normalmente
-                # else: Comando inclui caminho ou está vazio, pula check_command_exists por enquanto
+                            print_color(msg["cancel"], "\033[91m")
+                            proceed_anyway = False # Marca para não prosseguir
 
-                confirm_and_execute(user_input, command)
+                if proceed_anyway:
+                    confirm_and_execute(user_input, command)
 
-            print_color(msg["ready"], "\033[92m") # Verde (Usa a mensagem 'ready' atualizada)
+            print_color(msg["ready"], "\033[92m") # Verde
 
         except KeyboardInterrupt:
-            break # Permite Ctrl+C para sair graciosamente
+            break
         except EOFError:
-            break # Trata EOF (ex: se a entrada for redirecionada)
+            break
         except Exception as e:
-            # Captura erros inesperados no loop principal
             error_msg = msg.get("error_general", "An unexpected error occurred:")
-            print_color(f"\n{error_msg} {e}", "\033[91m") # Vermelho
-            traceback.print_exc() # Imprime traceback detalhado para depuração
-            time.sleep(1) # Pausa breve
+            print_color(f"\n{error_msg} {e}", "\033[91m")
+            traceback.print_exc()
+            time.sleep(1)
 
     goodbye_msg = msg.get("goodbye", "\n👋 Goodbye!")
-    print_color(goodbye_msg, "\033[92m") # Verde
+    print_color(goodbye_msg, "\033[92m")
 
 if __name__ == "__main__":
     main()
