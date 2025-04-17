@@ -109,14 +109,20 @@ DOWNLOAD_LINKS: Dict[str, Dict[str, Dict[str, Any]]] = {
 LANGUAGES: Dict[str, Dict[str, Any]] = {
     "en": {
         "header": r"""
- _   _       _           _ _   _       _      _ _     _
-| | | | __ _| |__   __ _| | | | |_ __ (_) ___| (_) __| |
-| |_| |/ _` | '_ \ / _` | | | | | '_ \| |/ __| | |/ _` |
-|  _  | (_| | | | | (_| | | | | | |_) | | (__| | | (_| |
-|_| |_|\__,_|_| |_|\__,_|_|_| |_| .__/|_|\___|_|_|\__,_|
-                                |_| AI v2.0
-""", # Arte ASCII atualizada ligeiramente
-        "welcome": "Welcome to HackerAI v2 - Your Enhanced Local AI Security Assistant",
+ 
+ ██▓ ▄▄▄          ██▓ ███▄    █ ██▒   █▓ ▄▄▄      ▓█████▄ ▓█████  ██▀███  
+▓██▒▒████▄       ▓██▒ ██ ▀█   █▓██░   █▒▒████▄    ▒██▀ ██▌▓█   ▀ ▓██ ▒ ██▒
+▒██▒▒██  ▀█▄     ▒██▒▓██  ▀█ ██▒▓██  █▒░▒██  ▀█▄  ░██   █▌▒███   ▓██ ░▄█ ▒
+░██░░██▄▄▄▄██    ░██░▓██▒  ▐▌██▒ ▒██ █░░░██▄▄▄▄██ ░▓█▄   ▌▒▓█  ▄ ▒██▀▀█▄  
+░██░ ▓█   ▓██▒   ░██░▒██░   ▓██░  ▒▀█░   ▓█   ▓██▒░▒████▓ ░▒████▒░██▓ ▒██▒
+░▓   ▒▒   ▓▒█░   ░▓  ░ ▒░   ▒ ▒   ░ ▐░   ▒▒   ▓▒█░ ▒▒▓  ▒ ░░ ▒░ ░░ ▒▓ ░▒▓░
+ ▒ ░  ▒   ▒▒ ░    ▒ ░░ ░░   ░ ▒░  ░ ░░    ▒   ▒▒ ░ ░ ▒  ▒  ░ ░  ░  ░▒ ░ ▒░
+ ▒ ░  ░   ▒       ▒ ░   ░   ░ ░     ░░    ░   ▒    ░ ░  ░    ░     ░░   ░ 
+ ░        ░  ░    ░           ░      ░        ░  ░   ░       ░  ░   ░     
+                                    ░              ░                      
+Invader v2.0
+""", # Arte ASCII atualizada
+        "welcome": "Welcome to IA invader v2 - Your Enhanced Local AI Security Assistant", # Nome atualizado
         "separator": "-----------------------------------------------------------------",
         "usage": "Usage: Enter your security task (e.g., 'scan example.com with nmap -sV')",
         "options": "Options: -h for help | -v for version | -lang to change language | -os to change OS",
@@ -131,17 +137,17 @@ LANGUAGES: Dict[str, Dict[str, Any]] = {
             "  -os : Change target OS for command generation\n"
             "  exit : Quit the application\n"
         ),
-        "version": f"HackerAI v2.0 - Powered by Ollama ({OLLAMA_MODEL})",
-        "input": "\nHackerAI> ",
-        "thinking": "HackerAI is thinking... 🤔",
-        "interpreting": "HackerAI is interpreting the command... 🧐",
-        "correcting": "HackerAI is attempting to correct the command... 🛠️",
+        "version": f"IA invader v2.0 - Powered by Ollama ({OLLAMA_MODEL})", # Nome atualizado
+        "input": "\nIA invader> ", # Nome atualizado
+        "thinking": "IA invader is thinking... 🤔", # Nome atualizado
+        "interpreting": "IA invader is interpreting the command... 🧐", # Nome atualizado
+        "correcting": "IA invader is attempting to correct the command... 🛠️", # Nome atualizado
         "ai_generated": "\n🤖 AI Generated Command:",
         "ai_interpreted": "🤖 AI Interpretation:",
         "ai_corrected": "\n🤖 AI Corrected Command Suggestion:",
         "confirm": "Do you want to execute this command? (y/n): ",
         "execute": "🚀 Executing:",
-        "ready": "\n✅ HackerAI is ready for your next command! (Type 'exit' to quit)\n",
+        "ready": "\n✅ IA invader is ready for your next command! (Type 'exit' to quit)\n", # Nome atualizado
         "cancel": "❌ Command execution canceled by the user.",
         "error_fetch": "🚫 Failed to generate command via Ollama.",
         "error_interpret": "🚫 Failed to get interpretation from Ollama.",
@@ -149,7 +155,7 @@ LANGUAGES: Dict[str, Dict[str, Any]] = {
         "error_ollama_comm": "🚫 Error communicating with Ollama API:",
         "error_ollama_conn": "🚫 Error connecting to Ollama API. Is Ollama running?",
         "error_invalid_req": "🚫 The request doesn't seem to translate into a valid shell command.",
-        "error_permission": "🚫 Permission Denied: Cannot execute the command. Try running HackerAI with administrator/root privileges if necessary.",
+        "error_permission": "🚫 Permission Denied: Cannot execute the command. Try running IA invader with administrator/root privileges if necessary.", # Nome atualizado
         "error_not_found": "🚫 Command not found:",
         "error_general": "🚫 An error occurred during execution:",
         "goodbye": "\n👋 Goodbye!",
@@ -161,19 +167,25 @@ LANGUAGES: Dict[str, Dict[str, Any]] = {
         "no_correction": "🤷 No alternative command suggested by AI.",
         "tool_hint": "Hint:",
         "tool_hint_generic": "Ensure the required tool is installed and available in your system's PATH.",
-        "lang_set_by_arg": "Language set to {lang} by argument.", # Nova mensagem
-        "proceed_q": "Proceed anyway? (y/n): ", # Nova mensagem
+        "lang_set_by_arg": "Language set to {lang} by argument.",
+        "proceed_q": "Proceed anyway? (y/n): ",
     },
     "pt": {
         "header": r"""
- _   _       _           _ _   _       _      _ _     _
-| | | | __ _| |__   __ _| | | | |_ __ (_) ___| (_) __| |
-| |_| |/ _` | '_ \ / _` | | | | | '_ \| |/ __| | |/ _` |
-|  _  | (_| | | | | (_| | | | | | |_) | | (__| | | (_| |
-|_| |_|\__,_|_| |_|\__,_|_|_| |_| .__/|_|\___|_|_|\__,_|
-                                |_| AI v2.0
-""",
-        "welcome": "Bem-vindo ao HackerAI v2 - Seu Assistente de Segurança Local com IA Aprimorado",
+
+ ██▓ ▄▄▄          ██▓ ███▄    █ ██▒   █▓ ▄▄▄      ▓█████▄ ▓█████  ██▀███  
+▓██▒▒████▄       ▓██▒ ██ ▀█   █▓██░   █▒▒████▄    ▒██▀ ██▌▓█   ▀ ▓██ ▒ ██▒
+▒██▒▒██  ▀█▄     ▒██▒▓██  ▀█ ██▒▓██  █▒░▒██  ▀█▄  ░██   █▌▒███   ▓██ ░▄█ ▒
+░██░░██▄▄▄▄██    ░██░▓██▒  ▐▌██▒ ▒██ █░░░██▄▄▄▄██ ░▓█▄   ▌▒▓█  ▄ ▒██▀▀█▄  
+░██░ ▓█   ▓██▒   ░██░▒██░   ▓██░  ▒▀█░   ▓█   ▓██▒░▒████▓ ░▒████▒░██▓ ▒██▒
+░▓   ▒▒   ▓▒█░   ░▓  ░ ▒░   ▒ ▒   ░ ▐░   ▒▒   ▓▒█░ ▒▒▓  ▒ ░░ ▒░ ░░ ▒▓ ░▒▓░
+ ▒ ░  ▒   ▒▒ ░    ▒ ░░ ░░   ░ ▒░  ░ ░░    ▒   ▒▒ ░ ░ ▒  ▒  ░ ░  ░  ░▒ ░ ▒░
+ ▒ ░  ░   ▒       ▒ ░   ░   ░ ░     ░░    ░   ▒    ░ ░  ░    ░     ░░   ░ 
+ ░        ░  ░    ░           ░      ░        ░  ░   ░       ░  ░   ░     
+                                    ░              ░                      
+Invader v2.0
+""", # Arte ASCII atualizada
+        "welcome": "Bem-vindo ao IA invader v2 - Seu Assistente de Segurança Local com IA Aprimorado", # Nome atualizado
         "separator": "-----------------------------------------------------------------",
         "usage": "Uso: Descreva sua tarefa de segurança (ex: 'escanear example.com com nmap -sV')",
         "options": "Opções: -h para ajuda | -v para versão | -lang para mudar idioma | -os para mudar SO",
@@ -188,17 +200,17 @@ LANGUAGES: Dict[str, Dict[str, Any]] = {
             "  -os : Muda o SO alvo para geração de comandos\n"
             "  exit : Sai da aplicação\n"
         ),
-        "version": f"HackerAI v2.0 - Alimentado por Ollama ({OLLAMA_MODEL})",
-        "input": "\nHackerAI> ",
-        "thinking": "HackerAI está pensando... 🤔",
-        "interpreting": "HackerAI está interpretando o comando... 🧐",
-        "correcting": "HackerAI está tentando corrigir o comando... 🛠️",
+        "version": f"IA invader v2.0 - Alimentado por Ollama ({OLLAMA_MODEL})", # Nome atualizado
+        "input": "\nIA invader> ", # Nome atualizado
+        "thinking": "IA invader está pensando... 🤔", # Nome atualizado
+        "interpreting": "IA invader está interpretando o comando... 🧐", # Nome atualizado
+        "correcting": "IA invader está tentando corrigir o comando... 🛠️", # Nome atualizado
         "ai_generated": "\n🤖 Comando Gerado pela IA:",
         "ai_interpreted": "🤖 Interpretação da IA:",
         "ai_corrected": "\n🤖 Sugestão de Correção da IA:",
         "confirm": "Deseja executar este comando? (s/n): ",
         "execute": "🚀 Executando:",
-        "ready": "\n✅ HackerAI está pronto para o próximo comando! (Digite 'exit' para sair)\n",
+        "ready": "\n✅ IA invader está pronto para o próximo comando! (Digite 'exit' para sair)\n", # Nome atualizado
         "cancel": "❌ Execução do comando cancelada pelo usuário.",
         "error_fetch": "🚫 Falha ao gerar comando via Ollama.",
         "error_interpret": "🚫 Falha ao obter interpretação do Ollama.",
@@ -206,7 +218,7 @@ LANGUAGES: Dict[str, Dict[str, Any]] = {
         "error_ollama_comm": "🚫 Erro ao comunicar com a API Ollama:",
         "error_ollama_conn": "🚫 Erro ao conectar à API Ollama. O Ollama está rodando?",
         "error_invalid_req": "🚫 A solicitação não parece traduzir-se num comando de shell válido.",
-        "error_permission": "🚫 Permissão Negada: Não é possível executar o comando. Tente rodar o HackerAI com privilégios de administrador/root se necessário.",
+        "error_permission": "🚫 Permissão Negada: Não é possível executar o comando. Tente rodar o IA invader com privilégios de administrador/root se necessário.", # Nome atualizado
         "error_not_found": "🚫 Comando não encontrado:",
         "error_general": "🚫 Ocorreu um erro durante a execução:",
         "goodbye": "\n👋 Adeus!",
@@ -218,8 +230,8 @@ LANGUAGES: Dict[str, Dict[str, Any]] = {
         "no_correction": "🤷 Nenhuma sugestão de comando alternativo pela IA.",
         "tool_hint": "Dica:",
         "tool_hint_generic": "Certifique-se de que a ferramenta necessária está instalada e disponível no PATH do seu sistema.",
-        "lang_set_by_arg": "Idioma definido para {lang} por argumento.", # Nova mensagem
-        "proceed_q": "Prosseguir mesmo assim? (s/n): ", # Nova mensagem
+        "lang_set_by_arg": "Idioma definido para {lang} por argumento.",
+        "proceed_q": "Prosseguir mesmo assim? (s/n): ",
     }
 }
 
@@ -397,9 +409,14 @@ def ask_ollama_for_interpretation(user_request: str, command: str) -> str:
     lang_name = "English" # Fallback
     if selected_lang in LANGUAGES and 'welcome' in LANGUAGES[selected_lang]:
          try:
-             lang_name = LANGUAGES[selected_lang]['welcome'].split()[1]
+             # Tenta obter o nome da IA do welcome message para consistência
+             lang_name = LANGUAGES[selected_lang]['welcome'].split(' to ')[1].split(' v')[0]
          except IndexError:
-             pass # Mantém o fallback se a divisão falhar
+              try:
+                  # Fallback para pegar a segunda palavra se ' to ' não estiver lá
+                  lang_name = LANGUAGES[selected_lang]['welcome'].split()[1]
+              except IndexError:
+                  pass # Mantém o fallback 'English'
 
     prompt = (
         f"You are a helpful assistant explaining shell commands. The user wants to perform a task and you generated a command.\n"
@@ -408,7 +425,7 @@ def ask_ollama_for_interpretation(user_request: str, command: str) -> str:
         f"Original User Request: \"{user_request}\"\n"
         f"Generated Command: `{command}`\n\n"
         f"Task: Provide a concise explanation of what this command does, focusing on its main purpose and key flags/options. "
-        f"Explain it in {lang_name}. Keep it brief (2-3 sentences max).\n\n"
+        f"Explain it in {lang_name}. Keep it brief (2-3 sentences max).\n\n" # Usa o nome extraído
         f"Explanation:"
     )
     explanation = _ollama_request(prompt, "interpreting")
@@ -578,7 +595,7 @@ def confirm_and_execute(user_request: str, command: str, is_correction: bool = F
 # --- Lógica Principal da Aplicação ---
 
 def main():
-    """Função principal para rodar a aplicação HackerAI."""
+    """Função principal para rodar a aplicação IA invader.""" # Nome atualizado no docstring
     # Declara globais usadas/modificadas em main para clareza
     global msg, selected_lang, selected_os
 
@@ -621,7 +638,7 @@ def main():
     # --- Loop Principal ---
     while True:
         try:
-            user_input = input(msg["input"]).strip()
+            user_input = input(msg["input"]).strip() # Usa o prompt atualizado
 
             if not user_input:
                 continue
@@ -669,7 +686,7 @@ def main():
 
                 confirm_and_execute(user_input, command)
 
-            print_color(msg["ready"], "\033[92m") # Verde
+            print_color(msg["ready"], "\033[92m") # Verde (Usa a mensagem 'ready' atualizada)
 
         except KeyboardInterrupt:
             break # Permite Ctrl+C para sair graciosamente
